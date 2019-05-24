@@ -66,20 +66,25 @@ int main(void) {
 	TaskHandle_t xHandle = NULL;
 
 
-
 	prvSetupHardware();
 
-	//
 
 //	xReturned =  xTaskCreate(vControlADC, "control_adc_value", 600, NULL, 3, NULL);
 
-	xTaskCreate(vLEDTask, "led_blink", 200, NULL, 1, NULL);
+	//xTaskCreate(vLEDTask, "led_blink", 200, NULL, 1, NULL);
 
 	 xTaskCreate(vDisplayRefresh, "display", 600, NULL, 8, NULL);
 
-	 xTaskCreate(vReadTensometr, "tensometr", 600, NULL, 2, NULL);
+	 xTaskCreate(vReadTensometr, "tensometr", 200, NULL, 2, NULL);
 
-	xReturned =  xTaskCreate(vGpioHandlerTask, "gpio", 100, NULL, 8, NULL);
+	 xReturned =  xTaskCreate(vGpioScanPins, "scan_io", 150, NULL, 6, NULL);
+
+	  xTaskCreate(vGpioHandlerTask, "gpio", 100, NULL, 8, NULL);
+
+	  xTaskCreate(vOneSecondInterval, "one_second", 300, NULL,5, NULL);
+
+	  xTaskCreate(vCalculatePower,  "one_second", 100, NULL, 4, NULL);
+
 
 
 
@@ -89,6 +94,8 @@ int main(void) {
 //	}else{
 //		printf("create not ok \n");
 //	}
+
+
 
 	// Start the scheduler
 	vTaskStartScheduler();

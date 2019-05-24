@@ -47,22 +47,22 @@ uint32_t hx711_single_read(void) {
             reading++;
         GPIO_WriteBit(GPIOA, GPIO_Pin_11, 0);
     }
-   // reading = reading << (32 - i);
+    reading = reading << (32 - i);
 
     return reading - zero;
 }
 
 uint64_t hx711_avg_read(uint8_t samples) {
-//    uint64_t adc_data = 0;
-//    uint8_t i;
-//
-//    for (i = 0; i < samples; ++i) {
-//        adc_data += hx711_single_read();
-//        delay_ms(timer, 100);
-//    }
-//    adc_data /= samples;
-    return hx711_single_read();
-    //return adc_data;
+    uint64_t adc_data = 0;
+    uint8_t i;
+
+    for (i = 0; i < samples; ++i) {
+        adc_data += hx711_single_read();
+        delay_ms(timer, 100);
+    }
+    adc_data /= samples;
+
+    return adc_data;
 }
 
 float hx711_read_gram(void) {

@@ -13,12 +13,17 @@
 
 void vLEDTask(void *pvParameters);
 void vControlADC(void *pvParameters);
+void vOneSecondInterval(void *pvParameters);
 void vDisplayRefresh(void *pvParameters);
+void vCalculatePower(void *pvParameters);
 void vReadTensometr(void *pvParameters);
 void vGpioHandlerTask(void *pvParameters);
 
+void vGpioScanPins(void *pvParameters) ;
+
 
 void vApplicationTickHook( void );
+
 
 
 
