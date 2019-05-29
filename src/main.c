@@ -86,15 +86,12 @@ int main(void) {
 	  xTaskCreate(vCalculatePower,  "one_second", 100, NULL, 4, NULL);
 
 
-
-
 //	if( xReturned == pdPASS )
 //	{
 //		printf("create ok \n");
 //	}else{
 //		printf("create not ok \n");
 //	}
-
 
 
 	// Start the scheduler

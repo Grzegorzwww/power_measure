@@ -170,6 +170,7 @@ void vDisplayRefresh(void *pvParameters)
 	static int tekst_moc_len = 0;
 	static int tekst_praca_len = 0;;
 	static int tekst_czas_len = 0;;
+	static int tekst_dystans_len = 0;;
 	unsigned short temp_adc =0;
 
 
@@ -178,6 +179,7 @@ void vDisplayRefresh(void *pvParameters)
 	char tekst_moc[20];
 	char tekst_praca[20];
 	char tekst_czas[20];
+	char tekst_dystans[20];
 	unsigned int tensometr_val =0;
 
 
@@ -185,11 +187,14 @@ void vDisplayRefresh(void *pvParameters)
 	LCD_setTextColor(WHITE);
 	LCD_setTextBgColor(BLACK);
 
+
+	int menu_height = 10;
+
+
 	for (;;) {
 
 		tekst_waga[0] = '\0';
 		tekst_kadencja[0] = '\0';
-
 
 		while(xQueueReceive(QueueTensometr, &tensometr_val, 1 / portTICK_RATE_MS ) == pdTRUE){
 			tensometr_val = ((tensometr_val / 10000)  *  4.240 )- 26.0;
@@ -201,80 +206,90 @@ void vDisplayRefresh(void *pvParameters)
 			sprintf(tekst_waga, "Waga =  %d [g]\0",  tensometr_val);
 			if(tekst_len != strlen(tekst_waga)){
 				tekst_len = strlen(tekst_waga);
-				LCD_setCursor(2, 20);
+				LCD_setCursor(2, menu_height);
 				LCD_writeString("                ");
 			}
 			LCD_setTextColor(WHITE);
-			LCD_setCursor(2, 20);
+			LCD_setCursor(2, menu_height);
 			LCD_writeString(tekst_waga);
-
-
 		}
 
 		LCD_setTextColor(YELLOW);
 		sprintf(tekst_kadencja, "Cadencja = %d \0",  crank_candence );
 		if(tekst_cadence_len != strlen(tekst_kadencja)){
 			tekst_cadence_len = strlen(tekst_kadencja);
-			LCD_setCursor(2, 60);
+			LCD_setCursor(2, menu_height+40);
 			LCD_writeString("                ");
 
 		}
 
-
 		LCD_setTextColor(RED);
-		LCD_setCursor(2, 100);
+		LCD_setCursor(2, menu_height+80);
 		sprintf(tekst_moc, "Moc =  %d [W]\0",  iGetPower());
 		if(tekst_moc_len != strlen(tekst_moc)){
 			tekst_moc_len = strlen(tekst_moc);
-			LCD_setCursor(2, 100);
+			LCD_setCursor(2, menu_height+ 80);
 			LCD_writeString("                 ");
 
 		}
 
-
 		LCD_setTextColor(GREEN);
-
-		LCD_setCursor(2, 140);
+		LCD_setCursor(2, menu_height +120);
 		sprintf(tekst_praca, "Praca = %d [Kj]\0", (int)fGetWork());
 
 		if(tekst_praca_len != strlen(tekst_praca)){
 			tekst_praca_len = strlen(tekst_praca);
-			LCD_setCursor(2, 140);
+			LCD_setCursor(2, menu_height+120);
 			LCD_writeString("                 ");
 
 		}
 
 		LCD_setTextColor(ORANGE);
-		LCD_setCursor(2, 180);
+		LCD_setCursor(2, menu_height+160);
 		char temp_tekst[9];
 		vReadStoperTime(temp_tekst);
 		sprintf(tekst_czas, "%s%s\0","Czas = ", temp_tekst);
 		if(tekst_czas_len != strlen(tekst_czas)){
 			tekst_czas_len = strlen(tekst_czas);
-			LCD_setCursor(2, 180);
+			LCD_setCursor(2, menu_height + 160);
 			LCD_writeString("                 ");
 
 		}
 
 
+		LCD_setTextColor(OLIVE);
+		LCD_setCursor(2, menu_height + 200);
+		sprintf(tekst_dystans, "Dystans = %.2f\0",  25.50);
+		if(tekst_dystans_len != strlen(tekst_dystans)){
+			tekst_dystans_len = strlen(tekst_dystans);
+			LCD_setCursor(2, menu_height + 200);
+			LCD_writeString("                 ");
+
+		}
+
 		LCD_setTextColor(YELLOW);
-		LCD_setCursor(2, 60);
+		LCD_setCursor(2, menu_height+40);
 		LCD_writeString(tekst_kadencja);
 
 
 		LCD_setTextColor(RED);
-		LCD_setCursor(2, 100);
+		LCD_setCursor(2, menu_height+80);
 		LCD_writeString(tekst_moc);
 
 
 		LCD_setTextColor(GREEN);
-		LCD_setCursor(2, 140);
+		LCD_setCursor(2, menu_height+120);
 		LCD_writeString(tekst_praca);
 
 
 		LCD_setTextColor(ORANGE);
-		LCD_setCursor(2, 180);
+		LCD_setCursor(2, menu_height+160);
 		LCD_writeString(tekst_czas);
+
+
+		LCD_setTextColor(OLIVE);
+		LCD_setCursor(2, menu_height+200);
+		LCD_writeString(tekst_dystans);
 
 
 		vTaskDelay( 250 / portTICK_RATE_MS );
